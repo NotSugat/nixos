@@ -39,6 +39,7 @@
   };
 	
   fonts.packages = [
+    pkgs.nerdfonts
     pkgs.noto-fonts
     pkgs.noto-fonts-cjk-sans
     pkgs.noto-fonts-emoji
@@ -134,6 +135,7 @@
      pkgs.slurp
      pkgs.slack
      pkgs.clang-tools
+     pkgs.lsd
 
 
       unstable.zed-editor
