@@ -136,6 +136,9 @@
      pkgs.slack
      pkgs.clang-tools
      pkgs.lsd
+     pkgs.loupe
+     pkgs.kdenlive
+     pkgs.gimp
 
 
       unstable.zed-editor
@@ -194,6 +197,7 @@
         wget
         jq
         python3
+        gnumake
  # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
   ];
