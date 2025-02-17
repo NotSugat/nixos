@@ -37,6 +37,9 @@
   programs.starship = {
     enable = true;
   };
+
+   # Enable Android Debug Bridge
+  programs.adb.enable = true;
 	
   fonts.packages = [
     pkgs.nerdfonts
@@ -68,16 +71,13 @@
 	  wayland = true;
 	};
     };
+    windowManager.i3.enable = true;
   };
 
 
   # Configure keymap in X11
   services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
-  # Enable CUPS to print documents.
+    layout = "us"; variant = ""; }; # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Enable sound with pipewire.
@@ -102,9 +102,10 @@
   users.users.crux = {
     isNormalUser = true;
     description = "crux";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "adbusers" ];
     packages = [
      pkgs.firefox-beta
+     pkgs.chromium
      pkgs.networkmanagerapplet
      pkgs.font-awesome
      pkgs.nerdfonts
@@ -139,6 +140,20 @@
      pkgs.loupe
      pkgs.kdenlive
      pkgs.gimp
+     pkgs.swaybg
+     pkgs.zip
+     pkgs.unrar
+     pkgs.tree
+     pkgs.trash-cli
+     pkgs.nautilus
+     pkgs.yazi
+     pkgs.android-tools
+     pkgs.android-udev-rules
+     unstable.android-studio
+     pkgs.flutter
+     pkgs.libpulseaudio
+     pkgs.arandr
+    pkgs.libnss-mysql
 
 
       unstable.zed-editor
@@ -167,6 +182,17 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
+
+       i3status  
+       i3lock    
+       dmenu     
+
+      xorg.libX11
+      xorg.libXext
+      xorg.libXrender
+      xorg.libxcb
+        
+
     	vim
         git
         clang
@@ -193,12 +219,33 @@
         jq
         python3
         gnumake
+        nss
+
+        procps
   ];
 
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
   };
+
+
+  # dyanmic linking
+ programs.nix-ld = {
+  enable = true;
+  libraries = with pkgs; [
+    stdenv.cc.cc
+    zlib
+    glibc
+    openssl
+    util-linux
+    xorg.libX11
+    pkgs.libpulseaudio
+    pkgs.libpng
+    pkgs.libnss-mysql
+    pkgs.nss
+  ];
+};
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -212,6 +259,10 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  services.udev.packages = [
+    pkgs.android-udev-rules
+  ];
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
